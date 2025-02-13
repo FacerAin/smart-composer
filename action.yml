@@ -1,7 +1,5 @@
 name: "Smart Composer"
-description: "Automatically categorize and move Markdown files using OpenAI GPT"
-icon: archive
-color: gray-dark
+description: "Automatically classify and copy changed Markdown files using AI."
 author: "FacerAin"
 
 runs:
@@ -10,23 +8,30 @@ runs:
     - name: Check out repository
       uses: actions/checkout@v3
 
-    - name: Set up Python
+    - name: Get changed .md files
+      id: changed-files
+      uses: tj-actions/changed-files@v34
+      with:
+        files: ${{ inputs.uploads_pattern }}
+        fetch-depth: 0
+
+    - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: "3.9"
 
-    - name: Install Python dependencies
-      run: |
-        pip install openai
+    - name: Install dependencies
+      run: pip install openai
       shell: bash
 
-    - name: Run classification script
-      run: |
-        python $GITHUB_ACTION_PATH/main.py \
-          --categories "${{ inputs.categories }}" \
-          --uploads-dir "${{ inputs.uploads_dir }}" \
-          --docs-dir "${{ inputs.docs_dir }}"
+    - name: Classify & copy via Python
       shell: bash
+      run: |
+        echo "Changed files: ${{ steps.changed-files.outputs.all_changed_files }}"
+        python $GITHUB_ACTION_PATH/main.py \
+          --changed-files "${{ steps.changed-files.outputs.all_changed_files }}" \
+          --categories "${{ inputs.categories }}" \
+          --docs-dir "${{ inputs.docs_dir }}"
       env:
         OPENAI_API_KEY: ${{ inputs.openai_api_key }}
 
@@ -40,10 +45,10 @@ inputs:
     required: false
     default: "Python,JavaScript,DevOps,Database,Etc"
 
-  uploads_dir:
-    description: "Folder containing the MD files to categorize"
+  uploads_pattern:
+    description: "Glob pattern for uploaded MD files (e.g. 'uploads/*.md')"
     required: false
-    default: "uploads"
+    default: "uploads/*.md"
 
   docs_dir:
     description: "Destination folder for categorized files"
