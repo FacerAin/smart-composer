@@ -12,17 +12,18 @@
 - **Flexible folder settings**: Configure both the source (“uploads”) and destination (“docs”) folders.
 - **Automated file movement**: No more manual reorganizing of files.
 - **AI-powered classification**: Let AI handle content analysis and categorization.
+- **(Coming soon) Proofreading & Editing**: Automatically refine your Markdown content.
 
 ## Requirements
 
 1. A GitHub repository where you have permissions to set up Actions.
 2. An **OpenAI API Key** stored as a GitHub secret (e.g., `OPENAI_API_KEY`).
-3. Python environment is automatically set up by the Action if you use a composite approach or a Docker-based setup.  
+3. Python environment is automatically set up by the Action if you use a composite approach or a Docker-based setup.
 
 ## Usage
 
 1. **Add the Action to Your Repository**  
-   - If this is your own repository, include the Action files (e.g., `action.yml`, `classify_and_move.py`) at the root of your project or in a dedicated folder (like `.github/actions/smart-composer`).
+   - If this is your own repository, include the Action files (e.g., `action.yml`, `main.py`) at the root of your project or in a dedicated folder (like `.github/actions/smart-composer`).
 
 2. **Define a Workflow**  
    Create or edit a workflow YAML file in `.github/workflows/`. For example:
@@ -42,7 +43,7 @@
            uses: actions/checkout@v3
 
          - name: Use Smart Composer
-           uses: facerain/smart-composer@v1  # Example reference
+           uses: facerain/smart-composer@v1
            with:
              openai_api_key: ${{ secrets.OPENAI_API_KEY }}
              categories: "Python,JavaScript,DevOps,Database,Etc"
