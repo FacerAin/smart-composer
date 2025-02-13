@@ -21,9 +21,7 @@ def main():
     category_list = [cat.strip() for cat in args.categories.split(",")]
 
     # parse changed files
-    # 'changed-files' could be newline-separated or comma-separated.
-    # We'll assume newline-separated for convenience.
-    changed_files = args.changed_files.split("\n")
+    changed_files = args.changed_files.split(" ")
 
     for file_path in changed_files:
         file_path = file_path.strip()
