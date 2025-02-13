@@ -1,5 +1,7 @@
 name: "Smart Composer"
 description: "Automatically categorize and move Markdown files using OpenAI GPT"
+icon: archive
+color: gray-dark
 author: "FacerAin"
 
 runs:
