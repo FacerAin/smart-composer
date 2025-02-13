@@ -2,23 +2,27 @@
 
 **Smart Composer** is a GitHub Action that automatically **categorizes** and **organizes** Markdown files. When you push new `.md` files to a specified folder in your repository, Smart Composer will:
 
-1. Analyze the content with AI.
-2. Determine the best matching category from a predefined list.
+1. Analyze the content with AI.  
+2. Determine the best matching category from a predefined list.  
 3. Move the file into the appropriate subfolder (e.g., `docs/<Category>`).
 
 ## Key Features
 
-- **Customizable categories**: Pass in your own list of categories as an input.
-- **Flexible folder settings**: Configure both the source (“uploads”) and destination (“docs”) folders.
-- **Automated file movement**: No more manual reorganizing of files.
-- **AI-powered classification**: Let AI handle content analysis and categorization.
+- **Customizable categories**: Pass in your own list of categories as an input.  
+- **Automated file orginization**: No more manual reorganizing of files.  
+- **AI-powered classification**: Let AI handle content analysis and categorization.  
 - **(Coming soon) Proofreading & Editing**: Automatically refine your Markdown content.
 
 ## Requirements
 
-1. A GitHub repository where you have permissions to set up Actions.
-2. An **OpenAI API Key** stored as a GitHub secret (e.g., `OPENAI_API_KEY`).
-3. Python environment is automatically set up by the Action if you use a composite approach or a Docker-based setup.
+1. A GitHub repository where you have permissions to set up Actions.  
+2. An **OpenAI API Key** stored as a GitHub secret (e.g., `OPENAI_API_KEY`).  
+3. Python environment is automatically set up by the Action if you use a composite approach or a Docker-based setup.  
+4. **GITHUB_TOKEN Write Permission**:  
+   - Go to your repository’s **Settings > Actions > General**.  
+   - Scroll down to **Workflow permissions** and select **Read and write permissions**.  
+   - Click **Save**.  
+   - This ensures that GitHub Actions can push commits back to your repository.
 
 ## Usage
 
@@ -38,6 +42,9 @@
    jobs:
      categorize:
        runs-on: ubuntu-latest
+       # Grant write permission for committing changes (or set in repo settings)
+       permissions:
+         contents: write
        steps:
          - name: Check out repository
            uses: actions/checkout@v3
@@ -49,7 +56,20 @@
              categories: "Python,JavaScript,DevOps,Database,Etc"
              uploads_dir: "uploads"
              docs_dir: "docs"
+
+         # Commit & push changes so the moves are reflected in your repo
+         - name: Commit changes
+           run: |
+             git config user.name "github-actions"
+             git config user.email "github-actions@github.com"
+             git add .
+             git commit -m "Auto categorization" || echo "No changes to commit"
+             git push
+           shell: bash
    ```
+
+   - By default, all file modifications happen only in the temporary environment if you don’t commit and push.  
+   - The `permissions: contents: write` setting (along with your repo’s “Read and write permissions” setting under **Actions > General**) allows GitHub Actions to push changes.
 
 3. **Configure Your Inputs**  
    - `openai_api_key`: Your OpenAI API key, stored as a secret.  
@@ -65,9 +85,9 @@
 
 ## Secrets Configuration
 
-1. Go to **Settings > Secrets and variables > Actions** in your repository.
-2. Click **New repository secret**.
-3. Name it `OPENAI_API_KEY` (or any name you prefer, but make sure it matches the workflow input).
+1. Go to **Settings > Secrets and variables > Actions** in your repository.  
+2. Click **New repository secret**.  
+3. Name it `OPENAI_API_KEY` (or any name you prefer, but make sure it matches the workflow input).  
 4. Paste your OpenAI API key as the secret’s value and save.
 
 ## Example Project Structure
@@ -94,6 +114,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contributing
 
-1. Fork the project
-2. Create a feature branch
-3. Submit a Pull Request
+1. Fork the project  
+2. Create a feature branch  
+3. Submit a Pull Request  
