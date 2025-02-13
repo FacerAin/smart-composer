@@ -43,7 +43,7 @@
            uses: actions/checkout@v3
 
          - name: Use Smart Composer
-           uses: facerain/smart-composer@v1
+           uses: FacerAin/smart-composer@v0.1
            with:
              openai_api_key: ${{ secrets.OPENAI_API_KEY }}
              categories: "Python,JavaScript,DevOps,Database,Etc"
