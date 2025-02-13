@@ -54,7 +54,7 @@
            with:
              openai_api_key: ${{ secrets.OPENAI_API_KEY }}
              categories: "Python,JavaScript,DevOps,Database,Etc"
-             uploads_dir: "uploads"
+             uploads_pattern: "uploads/*.md"
              docs_dir: "docs"
 
          # Commit & push changes so the moves are reflected in your repo
