@@ -1,0 +1,47 @@
+name: "Smart Composer"
+description: "Automatically categorize and move Markdown files using OpenAI GPT"
+author: "FacerAin"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    - name: Install Python dependencies
+      run: |
+        pip install openai
+
+    - name: Run classification script
+      run: |
+        python $GITHUB_ACTION_PATH/classify_and_move.py \
+          --categories "${{ inputs.categories }}" \
+          --uploads-dir "${{ inputs.uploads_dir }}" \
+          --docs-dir "${{ inputs.docs_dir }}"
+      env:
+        OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+
+inputs:
+  openai_api_key:
+    description: "OpenAI API Key"
+    required: true
+
+  categories:
+    description: "Comma-separated list of categories"
+    required: false
+    default: "Python,JavaScript,DevOps,Database,Etc"
+
+  uploads_dir:
+    description: "Folder containing the MD files to categorize"
+    required: false
+    default: "uploads"
+
+  docs_dir:
+    description: "Destination folder for categorized files"
+    required: false
+    default: "docs"
