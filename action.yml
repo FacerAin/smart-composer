@@ -21,7 +21,7 @@ runs:
 
     - name: Run classification script
       run: |
-        python $GITHUB_ACTION_PATH/classify_and_move.py \
+        python $GITHUB_ACTION_PATH/main.py \
           --categories "${{ inputs.categories }}" \
           --uploads-dir "${{ inputs.uploads_dir }}" \
           --docs-dir "${{ inputs.docs_dir }}"
