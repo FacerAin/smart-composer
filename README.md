@@ -2,16 +2,19 @@
 
 **Smart Composer** is a GitHub Action that automatically **categorizes** and **organizes** Markdown files. When you push new `.md` files to a specified folder in your repository, Smart Composer will:
 
-1. Analyze the content with AI.  
-2. Determine the best matching category from a predefined list.  
-3. Move the file into the appropriate subfolder (e.g., `docs/<Category>`).
+1. Analyze the content with AI.
+2. Determine the best matching category from a predefined list.
+3. Move the file into the appropriate subfolder (e.g., docs/<Category>).
+4. Automatically update the main README.md with a categorized list of your Markdown files.
+5. (New) Rewrite the content for improved clarity, consistency, and presentation (Proofreading & Editing).
 
 ## Key Features
 
 - **Customizable categories**: Pass in your own list of categories as an input.  
-- **Automated file orginization**: No more manual reorganizing of files.  
+- **Automated file organization**: No more manual reorganizing of files.  
 - **AI-powered classification**: Let AI handle content analysis and categorization.  
-- **(Coming soon) Proofreading & Editing**: Automatically refine your Markdown content.
+- **Proofreading & Editing**: Automatically refine your Markdown content *(now available!)*  
+- **Dynamic README Update**: The Action updates your main `README.md` with a structured list of files sorted into categories.
 
 ## Requirements
 
@@ -56,14 +59,16 @@
              categories: "Python,JavaScript,DevOps,Database,Etc"
              uploads_pattern: "uploads/*.md"
              docs_dir: "docs"
+             rewrite: true
+             update-readme: true
 
-         # Commit & push changes so the moves are reflected in your repo
+         # Commit & push changes so the moves and README update are reflected in your repo
          - name: Commit changes
            run: |
              git config user.name "github-actions"
              git config user.email "github-actions@github.com"
              git add .
-             git commit -m "Auto categorization" || echo "No changes to commit"
+             git commit -m "Auto categorization and README update" || echo "No changes to commit"
              git push
            shell: bash
    ```
@@ -75,13 +80,16 @@
    - `openai_api_key`: Your OpenAI API key, stored as a secret.  
    - `categories`: A comma-separated list of categories for AI to classify against.  
    - `uploads_pattern`: Where your new file patterns are initially placed.  
-   - `docs_dir`: The destination folder where categorized files will be moved.
+   - `docs_dir`: The destination folder where categorized files will be moved.  
+   - `rewrite`: Set to `true` if you want the content of the Markdown files to be automatically rewritten (proofreading & editing).
+   - `update-readme`: Set to `true` if you want the main `README.md` to be updated with the categorized list of files.
 
 4. **Add Your Files**  
-   - Whenever you push files into your designated uploads directory (e.g., `uploads/`), this workflow will trigger automatically and organize them into the `docs/<Category>` folders.
+   - Whenever you push files into your designated uploads directory (e.g., `uploads/`), this workflow will trigger automatically, organize them into the `docs/<Category>` folders, and update your main `README.md` with a current list of documents.
 
 5. **Check the Results**  
-   - After the workflow runs, open your repository’s `docs/` folder. You should see subfolders matching the categories you specified, each containing the relevant Markdown files.
+   - After the workflow runs, open your repository’s `docs/` folder to see the categorized Markdown files.  
+   - Your main `README.md` will now include a dynamically updated section (between `<!-- START DOCS LIST -->` and `<!-- END DOCS LIST -->`) displaying the categorized file structure.
 
 ## Secrets Configuration
 
@@ -108,6 +116,22 @@ my-repo/
 └── README.md
 ```
 
+Within your `README.md`, you will see an auto-updated section like:
+
+```markdown
+<!-- START DOCS LIST -->
+### Database
+
+- [example.md](docs/Database/example.md)
+
+### Etc
+
+- [another-file.md](docs/Etc/another-file.md)
+
+... etc.
+<!-- END DOCS LIST -->
+```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
@@ -116,4 +140,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 1. Fork the project  
 2. Create a feature branch  
-3. Submit a Pull Request  
+3. Submit a Pull Request
