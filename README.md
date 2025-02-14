@@ -74,11 +74,11 @@
 3. **Configure Your Inputs**  
    - `openai_api_key`: Your OpenAI API key, stored as a secret.  
    - `categories`: A comma-separated list of categories for AI to classify against.  
-   - `uploads_dir`: Where your new `.md` files are initially placed.  
+   - `uploads_pattern`: Where your new file patterns are initially placed.  
    - `docs_dir`: The destination folder where categorized files will be moved.
 
 4. **Add Your Files**  
-   - Whenever you push `.md` files into your designated uploads directory (e.g., `uploads/`), this workflow will trigger automatically and organize them into the `docs/<Category>` folders.
+   - Whenever you push files into your designated uploads directory (e.g., `uploads/`), this workflow will trigger automatically and organize them into the `docs/<Category>` folders.
 
 5. **Check the Results**  
    - After the workflow runs, open your repository’s `docs/` folder. You should see subfolders matching the categories you specified, each containing the relevant Markdown files.
