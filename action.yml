@@ -31,7 +31,7 @@ runs:
         python $GITHUB_ACTION_PATH/main.py \
           --changed-files "${{ steps.changed-files.outputs.all_changed_files }}" \
           --categories "${{ inputs.categories }}" \
-          --docs-dir "${{ inputs.docs_dir }}"
+          --docs-dir "${{ inputs.docs_dir }}" \
           --rewrite "${{ inputs.rewrite }}" \
           --update-readme "${{ inputs.update-readme }}" \
       env:
