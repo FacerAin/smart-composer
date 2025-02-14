@@ -32,6 +32,8 @@ runs:
           --changed-files "${{ steps.changed-files.outputs.all_changed_files }}" \
           --categories "${{ inputs.categories }}" \
           --docs-dir "${{ inputs.docs_dir }}"
+          --rewrite "${{ inputs.rewrite }}" \
+          --update-readme "${{ inputs.update-readme }}" \
       env:
         OPENAI_API_KEY: ${{ inputs.openai_api_key }}
 
@@ -54,3 +56,13 @@ inputs:
     description: "Destination folder for categorized files"
     required: false
     default: "docs"
+  
+  rewrite:
+    description: "Rewrite existing files"
+    required: false
+    default: "false"
+
+  update-readme:
+    description: "Update README.md with new links"
+    required: false
+    default: "true"
