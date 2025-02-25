@@ -66,6 +66,8 @@ def main():
                         help="Rewrite the content of the changed files.")
     parser.add_argument("--update-readme", type=bool, default=True,
                         help="Update the main README.md with the docs list.")
+    parser.add_argument("--make-copy", type=bool, default=False,
+                        help="Make a copy of the changed files in the docs directory when same file exists.")
     args = parser.parse_args()
 
     # categories
@@ -93,7 +95,8 @@ def main():
         base_name = os.path.basename(file_path)
         new_path = os.path.join(category_dir, base_name)
 
-        new_path = handle_duplicate(new_path)
+        if args.make_copy:
+            new_path = handle_duplicate(new_path)
 
         shutil.copy2(file_path, new_path)
         print(f"[Info] Copied '{file_path}' → '{new_path}'")
