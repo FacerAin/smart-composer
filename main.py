@@ -23,10 +23,23 @@ def generate_docs_list(docs_dir: str) -> str:
             for filename in sorted(os.listdir(category_path)):
                 if filename.lower().endswith(".md"):
                     file_path = os.path.join(docs_dir, category, filename)
-                    # Use relative path for GitHub rendering
-                    content_lines.append(f"- [{filename}]({file_path})")
+                    header_name = parse_markdown_header_name(open(file_path, "r", encoding="utf-8").read())
+                    if header_name:
+                        content_lines.append(f"- [{header_name}]({file_path})")
+                    else:
+                        content_lines.append(f"- [{filename}]({file_path})")
             content_lines.append("")  # Empty line for spacing
     return "\n".join(content_lines)
+
+def parse_markdown_header_name(content: str) -> str:
+    """
+    Parse the first header in the Markdown content and return the name.
+    If no header is found, return an empty string.
+    """
+    match = re.search(r"^#\s+(.*)", content, re.MULTILINE)
+    if match:
+        return match.group(1).strip()
+    return ""
 
 def update_readme(new_content: str, readme_path: str = "README.md"):
     """
