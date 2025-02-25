@@ -159,6 +159,7 @@ Additional Notes:
 - Do not alter the original meaning or key information; only rephrase and reorganize as needed.
 - The instructions are provided in English, but the rewriting should follow the language of the provided document.
 - Please follow the language of the original document.
+- If image urls are present, ensure they are still accessible after rewriting. You just using the same image urls.
 
 Here is the document:
 
